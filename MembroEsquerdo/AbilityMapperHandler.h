@@ -4,7 +4,7 @@
 
 #include "psmoveapi.h"
 #include "MappedButton.h"
-#include "KeyConstants.h"
+#include "DirectInputKeys.h"
 #include "Utils.h"
 #include <iostream>
 #include <vector>
@@ -21,4 +21,6 @@ private:
 	void handleButtonPress(Controller* controller);
 
 	bool isButtonPressed(int buttons, PSMove_Button button);
+
+	std::string getActiveWindowName();
 };

@@ -32,10 +32,13 @@
     <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="KeyConstants.h">
+    <ClInclude Include="AbilityMapperHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AbilityMapperHandler.h">
+    <ClInclude Include="DirectInputKeys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

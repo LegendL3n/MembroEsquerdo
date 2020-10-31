@@ -159,8 +159,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbilityMapperHandler.h" />
-    <ClInclude Include="KeyConstants.h" />
+    <ClInclude Include="DirectInputKeys.h" />
     <ClInclude Include="MappedButton.h" />
+    <ClInclude Include="Mode.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

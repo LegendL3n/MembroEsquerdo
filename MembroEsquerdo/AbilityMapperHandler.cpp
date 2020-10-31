@@ -1,13 +1,34 @@
 #include "AbilityMapperHandler.h"
+#include "Mode.h"
 
-const std::vector<MappedButton> usableButtons = {
-	{ DIK_Q, 'Q', Btn_SQUARE, "Square" },
-	{ DIK_W, 'W', Btn_TRIANGLE, "Triangle" },
-	{ DIK_E, 'E', Btn_CROSS, "Cross" },
-	{ DIK_R, 'R', Btn_CIRCLE, "Circle" },
-	{ DIK_D, 'D', Btn_MOVE, "Move" },
-	{ DIK_F, 'F', Btn_T, "T" },
-	{ DIK_N, 'N', Btn_SELECT, "Select" },
+#include <map>
+
+const std::map<std::string, Mode> modes = {
+	{
+		"League of Legends (TM) Client", {
+			{ 0, 34, 8 },
+			{
+				{ DIK_Q, 'Q', Btn_SQUARE, "Square" },
+				{ DIK_W, 'W', Btn_TRIANGLE, "Triangle" },
+				{ DIK_E, 'E', Btn_CROSS, "Cross" },
+				{ DIK_R, 'R', Btn_CIRCLE, "Circle" },
+				{ DIK_D, 'D', Btn_MOVE, "Move" },
+				{ DIK_F, 'F', Btn_T, "T" },
+				{ DIK_N, 'N', Btn_SELECT, "Select" },
+			}
+		}
+	},
+	{
+		"osu!", {
+			{ 123, 0, 123 },
+			{
+				{ DIK_X, 'X', Btn_SQUARE, "Square" },
+				{ DIK_X, 'X', Btn_TRIANGLE, "Triangle" },
+				{ DIK_Z, 'Z', Btn_CROSS, "Cross" },
+				{ DIK_Z, 'Z', Btn_CIRCLE, "Circle" },
+			}
+		}
+	}
 };
 
 const float TRIGGER_THRESHOLD = 0.8f;
@@ -34,25 +55,61 @@ void AbilityMapperHandler::disconnect(Controller* controller) {
 void AbilityMapperHandler::handleButtonPress(Controller* controller) {
 	int* lastPressedButtons = (int*)controller->user_data;
 
-	for (const MappedButton& btn : usableButtons) {
-		if (!isButtonPressed(*lastPressedButtons, btn.moveBtn) && isButtonPressed(controller->buttons, btn.moveBtn)) {
-			if (btn.moveBtn == Btn_T && controller->trigger < TRIGGER_THRESHOLD) continue;
+	std::string wndName = getActiveWindowName();
 
-			pressKey(btn.directInputKey);
-			std::cout << btn.moveBtnStr << "(" << btn.key << ") Pressed" << std::endl;
+	if (wndName != "") {
+		Mode currentMode;
+		bool found = false;
 
-			*lastPressedButtons |= btn.moveBtn;
+		for (std::pair<std::string, Mode> mode : modes) {
+			if (wndName.rfind(mode.first, 0) == 0) {
+				currentMode = mode.second;
+				found = true;
+			}
 		}
 
-		if (isButtonPressed(*lastPressedButtons, btn.moveBtn) && !isButtonPressed(controller->buttons, btn.moveBtn)) {
-			releaseKey(btn.directInputKey);
-			std::cout << btn.moveBtnStr << "(" << btn.key << ") Released" << std::endl;
+		if (found) {
+			controller->color = currentMode.ledColor;
 
-			*lastPressedButtons &= ~btn.moveBtn;
+			for (const MappedButton& btn : currentMode.mappedButtons) {
+				if (!isButtonPressed(*lastPressedButtons, btn.moveBtn) && isButtonPressed(controller->buttons, btn.moveBtn)) {
+					if (btn.moveBtn == Btn_T && controller->trigger < TRIGGER_THRESHOLD) continue;
+
+					pressKey(btn.directInputKey);
+					std::cout << btn.moveBtnStr << "(" << btn.key << ") Pressed" << std::endl;
+
+					*lastPressedButtons |= btn.moveBtn;
+				}
+
+				if (isButtonPressed(*lastPressedButtons, btn.moveBtn) && !isButtonPressed(controller->buttons, btn.moveBtn)) {
+					releaseKey(btn.directInputKey);
+					std::cout << btn.moveBtnStr << "(" << btn.key << ") Released" << std::endl;
+
+					*lastPressedButtons &= ~btn.moveBtn;
+				}
+			}
+		}
+		else {
+			controller->color = { 0, 0, 0 };
 		}
 	}
 }
 
 bool AbilityMapperHandler::isButtonPressed(int buttons, PSMove_Button button) {
 	return (buttons & button) != 0;
+}
+
+std::string AbilityMapperHandler::getActiveWindowName()
+{
+	HWND foreground = GetForegroundWindow();
+
+	if (foreground)
+	{
+		char windowTitle[256];
+		GetWindowTextA(foreground, windowTitle, 256);
+
+		return std::string(windowTitle);
+	}
+
+	return std::string();
 }
