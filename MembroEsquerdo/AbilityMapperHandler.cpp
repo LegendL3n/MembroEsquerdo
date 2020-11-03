@@ -41,8 +41,6 @@ void AbilityMapperHandler::connect(Controller* controller) {
 }
 
 void AbilityMapperHandler::update(Controller* controller) {
-	if (GetKeyState(VK_NUMLOCK) & 1) return;
-
 	handleButtonPress(controller);
 }
 
@@ -69,8 +67,6 @@ void AbilityMapperHandler::handleButtonPress(Controller* controller) {
 		}
 
 		if (found) {
-			controller->color = currentMode.ledColor;
-
 			for (const MappedButton& btn : currentMode.mappedButtons) {
 				if (!isButtonPressed(*lastPressedButtons, btn.moveBtn) && isButtonPressed(controller->buttons, btn.moveBtn)) {
 					if (btn.moveBtn == Btn_T && controller->trigger < TRIGGER_THRESHOLD) continue;
