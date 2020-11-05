@@ -1,5 +1,6 @@
 #include "AbilityMapperHandler.h"
 #include "Mode.h"
+#include "ColorConverter.h"
 
 #include <map>
 
@@ -42,6 +43,8 @@ void AbilityMapperHandler::connect(Controller* controller) {
 
 void AbilityMapperHandler::update(Controller* controller) {
 	handleButtonPress(controller);
+
+	colorBattery(controller);
 }
 
 void AbilityMapperHandler::disconnect(Controller* controller) {
@@ -88,6 +91,20 @@ void AbilityMapperHandler::handleButtonPress(Controller* controller) {
 		else {
 			controller->color = { 0, 0, 0 };
 		}
+	}
+}
+
+void AbilityMapperHandler::colorBattery(Controller* controller)
+{
+	Palette::HSV colorGen(5, 1.0, (blink || controller->battery > Batt_20Percent) ? 0.01 + controller->battery * 0.02 : 0.f);
+
+	switch (controller->battery) {
+	case (Batt_CHARGING):
+		break;
+	case (Batt_CHARGING_DONE):
+		break;
+	default:
+		controller->color = colorGen.toRGB();
 	}
 }
 

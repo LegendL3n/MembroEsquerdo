@@ -144,6 +144,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableSpecificWarnings>26812;4244;</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbilityMapperHandler.h" />
+    <ClInclude Include="ColorConverter.h" />
     <ClInclude Include="DirectInputKeys.h" />
     <ClInclude Include="MappedButton.h" />
     <ClInclude Include="Mode.h" />

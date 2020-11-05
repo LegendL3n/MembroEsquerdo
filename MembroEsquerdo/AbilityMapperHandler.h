@@ -11,14 +11,21 @@
 
 class AbilityMapperHandler : public psmoveapi::Handler
 {
+public:
+	AbilityMapperHandler() : blink(false) {}
+
 	void connect(Controller* controller);
 
 	void update(Controller* controller);
 
 	void disconnect(Controller* controller);
 
+	bool blink;
+
 private:
 	void handleButtonPress(Controller* controller);
+
+	void colorBattery(Controller* controller);
 
 	bool isButtonPressed(int buttons, PSMove_Button button);
 

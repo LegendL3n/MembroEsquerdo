@@ -41,5 +41,8 @@
     <ClInclude Include="Mode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ColorConverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
