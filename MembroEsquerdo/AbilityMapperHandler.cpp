@@ -16,6 +16,7 @@ const std::map<std::string, Mode> modes = {
 				{ DIK_D, 'D', Btn_MOVE, "Move" },
 				{ DIK_F, 'F', Btn_T, "T" },
 				{ DIK_N, 'N', Btn_SELECT, "Select" },
+				{ DIK_Y, 'Y', Btn_START, "Start" },
 			}
 		}
 	},
